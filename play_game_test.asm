@@ -1,6 +1,6 @@
 .data
-moves_filename: .asciiz "moves02.txt"
-board_filename: .asciiz "game02.txt"
+moves_filename: .asciiz "moves03.txt"
+board_filename: .asciiz "game04.txt"
 num_moves_to_execute: .word 10
 moves: .byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 .align 2

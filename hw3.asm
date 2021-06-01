@@ -156,8 +156,8 @@ load_game:
 		addi $s0, $s0, 6 #shift the gamestate address to the gameboard
 		li $t0, 10 #going to divide by 10
 		div $s4, $t0 #divide top mancala by 10
-		mfhi $t1 #first digit of top mancala
-		mflo $t2 #second digit of top manala
+		mflo $t1 #first digit of top mancala
+		mfhi $t2 #second digit of top manala
 		addi $t1, $t1, 48
 		sb $t1, 0($s0) #store first digit of num stones in top mancala
 		addi $t2, $t2, 48
@@ -249,8 +249,8 @@ load_game:
 	endbotrow:	
 		li $t0, 10 #going to divide by 10
 		div $s5, $t0 #divide top mancala by 10
-		mfhi $t1 #first digit of top mancala
-		mflo $t2 #second digit of top manala
+		mflo $t1 #first digit of top mancala
+		mfhi $t2 #second digit of top manala
 		addi $t1, $t1, 48
 		sb $t1, 0($s0) #store first digit of num stones in top mancala
 		addi $t2, $t2, 48
@@ -407,6 +407,7 @@ set_pocket:
 	#check if size is valid
 	li $t0, 99
 	bgt $s5, $t0, size_error #if size is greater than 99, then size error
+	bltz $s5, size_error
 	
 	#create increment based on whether B or T
 	addi $s0, $s0, 8 #go to beginning of gameboard (player 2's first pocket)
@@ -1356,10 +1357,15 @@ print_board:
 	end_print_board:	
 		jr $ra
 write_board:
+	addi $sp, $sp, -12
+	sw $s0, 0($sp)
+	sw $s1, 4($sp)
+	sw $s2, 8($sp)
+
 	move $s0, $a0 #state
 	lbu $s1, 2($s0) #num pockets
 	
-	addi $sp, $sp, -10 #subtract by 10 to make space for output.txt
+	addi $sp, $sp, -11 #subtract by 10 to make space for output.txt
 	li $t0, 'o'
 	sb $t0, 0($sp)
 	li $t0, 'u'
@@ -1380,6 +1386,7 @@ write_board:
 	sb $t0, 8($sp)
 	li $t0, 't'
 	sb $t0, 9($sp)
+	sb $0, 10($sp)
 	
 	move $a0, $sp #output.txt
 	li $a1, 1
@@ -1388,7 +1395,7 @@ write_board:
 	syscall
 	bltz $v0, write_open_file_error
 	move $s2, $v0 #file descriptor
-	addi $sp, $sp, 10 #restore stack
+	addi $sp, $sp, 11 #restore stack
 	
 	move $a0, $s2 #file descriptor
 	addi $sp, $sp, -4 #memory buffer
@@ -1509,7 +1516,11 @@ write_board:
 	
 	write_open_file_error:
 		li $v0, -1
-	end_write_board:	
+	end_write_board:
+		lw $s0, 0($sp)
+		lw $s1, 4($sp)
+		lw $s2, 8($sp)
+		addi $sp, $sp, 12	
 		jr $ra
 	
 ############################ DO NOT CREATE A .data SECTION ############################

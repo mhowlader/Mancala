@@ -1,7 +1,7 @@
 .data
-player: .byte 'B'
-distance: .byte 6
-size: .word 10
+player: .byte 'T'
+distance: .byte 5
+size: .word -5
 .align 2
 state:        
     .byte 0         # bot_mancala       	(byte #0)

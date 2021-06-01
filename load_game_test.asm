@@ -1,5 +1,5 @@
 .data
-board_filename: .asciiz "game01.txt"
+board_filename: .asciiz "game02.txt"
 .align 2
 state:        
     .byte 0         # bot_mancala       	(byte #0)
@@ -36,12 +36,6 @@ li $a0, '\n'
 li $v0, 11
 syscall
 
-li $t0, -10
-li $t1, 13
-div $t0, $t1
-mfhi $a0
-li $v0, 1
-syscall
 
 
 
